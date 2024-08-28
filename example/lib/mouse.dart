@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:pointer_lock/pointer_lock.dart';
 
@@ -14,8 +15,6 @@ class Mouse {
   static Offset _delta = Offset.zero;
 
   static final _lock = PointerLock();
-
-  static bool _pointerLocked = false;
 
   static ValueChanged<PointerDataPacket>? _onPointerDataPacket;
 
@@ -31,13 +30,12 @@ class Mouse {
             e.change == PointerChange.hover;
       });
 
-      // If the data is empty and the pointer is locked then we can assume that
-      // the user did move the mouse because Flutter will still trigger the
-      // onPointerDataPacket but it cant retrieve data because the pointer was
-      // locked.
-      final synthesizeMovement = packet.data.isEmpty && _pointerLocked;
+      // If the user is dragging primaryMouseButton
+      final isDragging = packet.data.any((e) {
+        return e.buttons & kPrimaryMouseButton != 0;
+      });
 
-      if (hasPointerMoved || synthesizeMovement) {
+      if (isDragging && hasPointerMoved) {
         _delta = await _lock.lastPointerDelta();
       }
     };
@@ -47,26 +45,9 @@ class Mouse {
     if (_onPointerDataPacket != null) {
       PlatformDispatcher.instance.onPointerDataPacket = _onPointerDataPacket;
     }
-    return unlock();
   }
 
   static Future<void> reset() async {
     _delta = Offset.zero;
-  }
-
-  static Future<void> lock() async {
-    if (_pointerLocked) {
-      return;
-    }
-    reset();
-    return _lock.lockPointer().then((_) => _pointerLocked = true);
-  }
-
-  static Future<void> unlock() async {
-    if (!_pointerLocked) {
-      return;
-    }
-    reset();
-    return _lock.unlockPointer().then((_) => _pointerLocked = false);
   }
 }
