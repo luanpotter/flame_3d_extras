@@ -1,5 +1,6 @@
 import 'package:flame_3d/core.dart';
 import 'package:flame_3d_extras/extensions/quaternion_extensions.dart';
+import 'package:flame_3d_extras/extensions/vector3_extensions.dart';
 import 'package:flame_3d_extras/parser/gltf/gltf_node.dart';
 
 enum AnimationInterpolation {
@@ -38,14 +39,10 @@ enum AnimationInterpolation {
 
   Vector3 lerp(Vector3 a, Vector3 b, double t) {
     return switch (this) {
-      linear => vec3lerp(a, b, t),
+      linear => Vector3Utils.lerp(a, b, t),
       step => a,
       cubicSpline => throw UnimplementedError(),
     };
-  }
-
-  Vector3 vec3lerp(Vector3 a, Vector3 b, double t) {
-    return a + (b - a).scaled(t);
   }
 
   Quaternion slerp(Quaternion a, Quaternion b, double t) {

@@ -144,7 +144,7 @@ class PlaygroundWorld3D extends World3D with TapCallbacks {
 
     await add(player = Player());
     await setupLights();
-    await setModel(ModelDef.models.first);
+    await setModel(ModelDef.models[1]);
 
     await Mouse.init();
     game.resume();
