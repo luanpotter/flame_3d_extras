@@ -7,9 +7,10 @@ import 'package:flame_3d/game.dart';
 
 class Player extends Component3D
     with KeyEventHandler, HasGameReference<PlaygroundGame> {
-  Player({
-    required super.position,
-  });
+  Player()
+      : super(
+          position: _startPosition.clone(),
+        );
 
   @override
   bool get propagateKeyEvent =>
@@ -47,6 +48,11 @@ class Player extends Component3D
     }
   }
 
+  void resetPlayer() {
+    position.setFrom(_startPosition);
+    resetCamera();
+  }
+
   void resetCamera() {
     rotation.setFromTwoVectors(Vector3(0, 0, 1), -position);
     Mouse.reset();
@@ -78,4 +84,5 @@ class Player extends Component3D
   static const strafingSpeed = 16;
 
   static final _up = Vector3(0, 1, 0);
+  static final _startPosition = Vector3(0, 0, -10);
 }

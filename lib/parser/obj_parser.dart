@@ -5,7 +5,7 @@ import 'package:flame_3d/game.dart';
 import 'package:flame_3d/resources.dart';
 import 'package:flame_3d_extras/model/model.dart';
 import 'package:flame_3d_extras/parser/model_parser.dart';
-import 'package:flame_3d_extras/surface_tool.dart';
+import 'package:flame_3d_extras/parser/obj/surface_tool.dart';
 
 class ObjParser extends ModelParser {
   @override

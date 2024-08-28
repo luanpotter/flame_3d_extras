@@ -46,6 +46,11 @@ class ModelDef {
   static Future<void> init() async {
     models = [
       await ModelDef.load(
+        name: 'donuts/donut_1.obj',
+        desc: 'Static OBJ file example',
+        source: 'https://github.com/flame-engine/defend_the_donut/',
+      ),
+      await ModelDef.load(
         name: 'animated-triangle.gltf',
         desc: 'Simple non-skeletal animation on a 2D triangle.',
         source:

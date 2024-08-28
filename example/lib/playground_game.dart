@@ -85,6 +85,8 @@ class PlaygroundGame extends FlameGame<PlaygroundWorld3D>
       gridLines.toggle();
     } else if (keysPressed.contains(LogicalKeyboardKey.f3)) {
       showLights = !showLights;
+    } else if (keysPressed.contains(LogicalKeyboardKey.f12)) {
+      world.player.resetPlayer();
     }
 
     return super.onKeyEvent(event, keysPressed);
@@ -129,9 +131,7 @@ class PlaygroundWorld3D extends World3D with TapCallbacks {
           clearColor: const Color(0xFF3C3C3C),
         );
 
-  final Player player = Player(
-    position: Vector3(0, 0, -10),
-  );
+  late Player player;
   ModelComponent? model;
 
   @override
@@ -142,8 +142,15 @@ class PlaygroundWorld3D extends World3D with TapCallbacks {
   FutureOr<void> onLoad() async {
     await ModelDef.init();
 
-    await add(player);
+    await add(player = Player());
+    await setupLights();
+    await setModel(ModelDef.models.first);
 
+    await Mouse.init();
+    game.resume();
+  }
+
+  Future<void> setupLights() async {
     await add(
       LightComponent.ambient(
         intensity: 0.75,
@@ -153,11 +160,6 @@ class PlaygroundWorld3D extends World3D with TapCallbacks {
     await pointLight(Vector3.zero(), const Color(0xFFFFFFFF));
     await pointLight(Vector3(0, 0, -6), const Color(0xFFFFFFFF));
     await pointLight(Vector3(0, 3, 6), const Color(0xFFFFFFFF));
-
-    await setModel(ModelDef.models.first);
-
-    Mouse.init();
-    game.resume();
   }
 
   Future<void> setModel(ModelDef modelDef) async {
