@@ -1,0 +1,31 @@
+name: example
+description: Example project for flame_3d_extras, featuring a 3D scene playground.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.0-167.0.dev
+
+dependencies:
+  flame: ^1.19.0
+  flame_3d: ^0.1.0-dev.1
+  flame_3d_extras:
+    path: ../
+  flutter:
+    sdk: flutter
+  pointer_lock:
+    git:
+      url: https://github.com/helgoboss/pointer_lock.git
+      ref: main
+
+dev_dependencies:
+  flame_lint: ^1.2.1
+  flame_test: ^1.17.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: false
+
+  assets:
+    - assets/objects/

@@ -1,0 +1,18 @@
+name: flame_3d_extras
+description: >
+  An experimental playground with extra features yet to be fully ported into flame_3d.
+  Anything in this package is subject to change. Features will probably be slowly incorporated into the main library.
+version: 0.1.0
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flame: ^1.19.0
+  flame_3d: ^0.1.0-dev.1
+  ordered_set: ^6.0.0
+
+dev_dependencies:
+  flame_lint: ^1.2.1
+  flame_test: ^1.17.0
