@@ -13,7 +13,8 @@ class PlaygroundApp extends StatefulWidget {
   State<PlaygroundApp> createState() => _PlaygroundAppState();
 }
 
-class _PlaygroundAppState extends State<PlaygroundApp> with WidgetsBindingObserver {
+class _PlaygroundAppState extends State<PlaygroundApp>
+    with WidgetsBindingObserver {
   final game = PlaygroundGame();
 
   @override

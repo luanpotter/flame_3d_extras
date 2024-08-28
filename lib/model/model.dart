@@ -173,7 +173,7 @@ class ModelNode {
         }
 
         final jointTransform = transform;
-            // jointNode?.animationOnlyTransform ?? Matrix4.identity();
+        // jointNode?.animationOnlyTransform ?? Matrix4.identity();
 
         return jointTransform.multiplied(joint.inverseBindMatrix);
       }).toList();

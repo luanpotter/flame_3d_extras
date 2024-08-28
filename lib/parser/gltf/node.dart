@@ -20,7 +20,7 @@ import 'package:flame_3d_extras/parser/gltf/skin.dart';
 /// translation.
 /// If none are provided, the transform is the identity.
 ///
-/// When a node is targeted for animation (referenced by an 
+/// When a node is targeted for animation (referenced by an
 /// animation.channel.target), `matrix` **MUST NOT** be present.
 class Node extends GltfNode {
   /// The reference to the camera referenced by this node.

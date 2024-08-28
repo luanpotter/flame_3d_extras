@@ -117,7 +117,7 @@ class RawAccessor extends GltfNode {
     if (view.length % step != 0) {
       throw Exception(
         'Accessor data length ${view.length}'
-        ' is not a multiple of the step $step'
+        ' is not a multiple of the step $step',
       );
     }
 

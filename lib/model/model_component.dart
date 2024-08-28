@@ -13,7 +13,10 @@ class ModelComponent extends Object3D {
     required this.model,
   });
 
-  Aabb3 get aabb => model.aabb;
+  Aabb3 get aabb => _aabb
+    ..setFrom(model.aabb)
+    ..transform(transformMatrix);
+  final Aabb3 _aabb = Aabb3();
 
   @override
   void bind(GraphicsDevice device) {
@@ -24,7 +27,7 @@ class ModelComponent extends Object3D {
         device.jointsInfo.jointTransformsPerSurface = node.jointTransforms;
         // ignore: invalid_use_of_internal_member
         world.device
-          ..model.setFrom(node.combinedTransform)
+          ..model.setFrom(transformMatrix.multiplied(node.combinedTransform))
           ..bindMesh(mesh);
       }
     }

@@ -84,5 +84,5 @@ class Player extends Component3D
   static const strafingSpeed = 16;
 
   static final _up = Vector3(0, 1, 0);
-  static final _startPosition = Vector3(0, 0, -10);
+  static final _startPosition = Vector3(0, 0, -30);
 }

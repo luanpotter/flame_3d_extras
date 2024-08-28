@@ -6,7 +6,7 @@ import 'package:flame_3d_extras/components/line_3d.dart';
 
 class GridLines extends Component {
   static const _gridSize = 2.0;
-  bool visible = false;
+  bool visible = true;
 
   @override
   Future<void> onLoad() async {

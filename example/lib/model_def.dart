@@ -1,3 +1,5 @@
+import 'package:flame_3d/game.dart';
+import 'package:flame_3d_extras/extensions/matrix4_utils.dart';
 import 'package:flame_3d_extras/model/model.dart';
 import 'package:flame_3d_extras/model/model_component.dart';
 import 'package:flame_3d_extras/parser/model_parser.dart';
@@ -8,28 +10,34 @@ class ModelDef {
   final String name;
   final String desc;
   final String source;
+  final Matrix4 transform;
   final Model model;
 
   ModelDef({
     required this.name,
     required this.desc,
     required this.source,
+    required this.transform,
     required this.model,
   });
 
   ModelComponent toComponent() {
-    return ModelComponent(model: model);
+    return ModelComponent(
+      model: model,
+    )..transform.setFrom(Transform3D.fromMatrix4(transform));
   }
 
   static Future<ModelDef> load({
     required String name,
     required String desc,
     required String source,
+    Matrix4? transform,
   }) async {
     return ModelDef(
       name: name,
       desc: desc,
       source: source,
+      transform: transform ?? Matrix4.identity(),
       model: await _parse(name),
     );
   }
@@ -38,6 +46,7 @@ class ModelDef {
     try {
       return await ModelParser.parse('objects/$name');
     } catch (e) {
+      // ignore: avoid_print
       print('Error loading model $name: $e');
       rethrow;
     }
@@ -71,6 +80,9 @@ class ModelDef {
       await ModelDef.load(
         name: 'duck.glb',
         desc: 'Simple 3D duck.',
+        transform: matrix4(
+          scale: Vector3.all(160.0),
+        ),
         source:
             'https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/Duck',
       ),
