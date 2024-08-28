@@ -46,7 +46,7 @@ class ModelDef {
   static Future<void> init() async {
     models = [
       await ModelDef.load(
-        name: 'donuts/donut_1.obj',
+        name: 'donut/donut.obj',
         desc: 'Static OBJ file example',
         source: 'https://github.com/flame-engine/defend_the_donut/',
       ),
