@@ -51,6 +51,8 @@ class ModelComponent extends Object3D {
 
   @override
   bool shouldCull(CameraComponent3D camera) {
+    // TODO(luan): this actually does not work because of animations
+    // it might end up culling something that is actually visible
     return camera.frustum.intersectsWithAabb3(aabb);
   }
 }

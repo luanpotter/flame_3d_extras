@@ -74,7 +74,7 @@ class Scene extends GltfNode {
 
     final node = ModelNode(
       nodeIndex: nodeRef.index,
-      parentNodeIndex: parent?.parentNodeIndex,
+      parentNodeIndex: parent?.nodeIndex,
       transform: combinedTransform,
       mesh: mesh,
       joints: modelJoints,
