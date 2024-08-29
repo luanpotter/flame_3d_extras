@@ -11,3 +11,4 @@ duck.glb from https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Model
 metal.glb from https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/MetalRoughSpheres
 rogue.glb from https://kaylousberg.itch.io/kaykit-adventurers
 simple-skin.gltf from https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/SimpleSkin
+char.gltf from https://quaternius.itch.io/ultimate-platformer-pack

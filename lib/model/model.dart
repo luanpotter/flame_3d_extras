@@ -117,20 +117,19 @@ class ModelNode {
       resultMatrix.multiply(processedNodes[parentNodeIndex]!.combinedTransform);
     }
 
+    // local
+    resultMatrix.multiply(transform);
+
     // animation
     final animationTransform = animation?.sample(nodeIndex);
     if (animationTransform != null) {
       resultMatrix.multiply(animationTransform);
     }
 
-    // local
-    resultMatrix.multiply(transform);
-
     final jointTransforms = computeJointsPerSurface(processedNodes);
 
     processedNodes[nodeIndex] = ProcessedNode(
       node: this,
-      animationOnlyTransform: animationTransform ?? Matrix4.identity(),
       combinedTransform: resultMatrix,
       jointTransforms: jointTransforms,
     );
@@ -159,29 +158,11 @@ class ModelNode {
         final jointNodeIndex = joint.nodeIndex;
         final jointNode = processedNodes[jointNodeIndex];
 
-        final nodeTree = <int>[];
-        var currentNode = jointNode?.node;
-        while (currentNode != null) {
-          nodeTree.insert(0, currentNode.nodeIndex);
-          currentNode = processedNodes[currentNode.parentNodeIndex]?.node;
-        }
+        final transform = Matrix4.identity()
+          ..multiply(jointNode?.combinedTransform ?? Matrix4.identity())
+          ..multiply(joint.inverseBindMatrix);
 
-        final transform = Matrix4.identity();
-
-        // TODO(luan): figure out the order of operations here
-        for (final node in nodeTree) {
-          transform.multiply(processedNodes[node]!.node.transform);
-          transform.multiply(processedNodes[node]!.animationOnlyTransform);
-        }
-
-        final jointTransform = transform;
-        // .multiplied(
-        //   jointNode?.animationOnlyTransform ?? Matrix4.identity(),
-        // );
-
-        return jointTransform.multiplied(joint.inverseBindMatrix);
-
-        return Matrix4.identity();
+        return transform;
       }).toList();
 
       jointTransformsPerSurface[idx] = jointTransforms;
@@ -203,7 +184,6 @@ class ModelJoint {
 
 class ProcessedNode {
   final ModelNode node;
-  final Matrix4 animationOnlyTransform;
   final Matrix4 combinedTransform;
   // for each surface within the node's mesh, a list of up to 4 joint transforms
   // with localized indexes according to the surface's localJoints
@@ -211,8 +191,6 @@ class ProcessedNode {
 
   ProcessedNode({
     required this.node,
-    // TODO(luan): remove this as should not be needed
-    required this.animationOnlyTransform,
     required this.combinedTransform,
     required this.jointTransforms,
   });
