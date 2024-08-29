@@ -67,14 +67,32 @@ class PlaygroundGame extends FlameGame<PlaygroundWorld3D>
 
     for (final (digit, idx) in KeyEventHandler.digits) {
       if (keysPressed.contains(digit)) {
-        if (idx == 0) {
-          world.clearModel();
-          return KeyEventResult.handled;
-        }
-        final model = ModelDef.models.elementAtOrNull(idx - 1);
-        if (model != null) {
-          world.setModel(model);
-          return KeyEventResult.handled;
+        if (keysPressed.contains(LogicalKeyboardKey.shiftLeft) ||
+            keysPressed.contains(LogicalKeyboardKey.shiftRight)) {
+          final model = world.model;
+          if (model != null) {
+            if (idx == 0) {
+              model.stopAnimation();
+              return KeyEventResult.handled;
+            } else {
+              final animation =
+                  model.model.animations.keys.elementAtOrNull(idx - 1);
+              if (animation != null) {
+                model.playAnimation(animation);
+                return KeyEventResult.handled;
+              }
+            }
+          }
+        } else {
+          if (idx == 0) {
+            world.clearModel();
+            return KeyEventResult.handled;
+          }
+          final model = ModelDef.models.elementAtOrNull(idx - 1);
+          if (model != null) {
+            world.setModel(model);
+            return KeyEventResult.handled;
+          }
         }
       }
     }
@@ -144,7 +162,7 @@ class PlaygroundWorld3D extends World3D with TapCallbacks {
 
     await add(player = Player());
     await setupLights();
-    await setModel(ModelDef.models[4]);
+    await setModel(ModelDef.models[8]);
 
     await Mouse.init();
     game.resume();
@@ -176,6 +194,7 @@ class PlaygroundWorld3D extends World3D with TapCallbacks {
   Future<void> clearModel() async {
     final currentModel = model;
     if (currentModel != null) {
+      model = null;
       remove(currentModel);
     }
   }

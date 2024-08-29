@@ -52,6 +52,10 @@ class ModelComponent extends Object3D {
     playAnimation(model.animations.keys.toList()[idx]);
   }
 
+  void stopAnimation() {
+    _currentAnimation = null;
+  }
+
   @override
   bool shouldCull(CameraComponent3D camera) {
     // TODO(luan): this actually does not work because of animations

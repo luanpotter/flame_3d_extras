@@ -92,16 +92,27 @@ class ModelDef {
         source:
             'https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/MetalRoughSpheres',
       ),
-      await ModelDef.load(
-        name: 'rogue.glb',
-        desc: 'Low-poly 3D rogue character with several animations.',
-        source: 'https://kaylousberg.itch.io/kaykit-adventurers',
-      ),
+      // await ModelDef.load(
+      //   name: 'rogue.glb',
+      //   desc: 'Low-poly 3D rogue character with several animations.',
+      //   source: 'https://kaylousberg.itch.io/kaykit-adventurers',
+      // ),
       await ModelDef.load(
         name: 'simple-skin.gltf',
         desc: 'Simple skinning animation over a rectangle.',
         source:
             'https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/SimpleSkin',
+      ),
+      await ModelDef.load(
+        name: 'rigged-simple.glb',
+        desc: 'Animations. Skins. Start with this to test skinning.',
+        source:
+            'https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/RiggedSimple',
+      ),
+      await ModelDef.load(
+        name: 'char.gltf',
+        desc: 'Simple platformer character.',
+        source: 'https://quaternius.itch.io/ultimate-platformer-pack',
       ),
     ];
   }

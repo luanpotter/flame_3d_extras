@@ -158,6 +158,7 @@ class ModelNode {
 
         final jointNodeIndex = joint.nodeIndex;
         final jointNode = processedNodes[jointNodeIndex];
+
         final nodeTree = <int>[];
         var currentNode = jointNode?.node;
         while (currentNode != null) {
@@ -165,17 +166,22 @@ class ModelNode {
           currentNode = processedNodes[currentNode.parentNodeIndex]?.node;
         }
 
-        // TODO(luan): figure out the order of operations here
         final transform = Matrix4.identity();
+
+        // TODO(luan): figure out the order of operations here
         for (final node in nodeTree) {
           transform.multiply(processedNodes[node]!.node.transform);
           transform.multiply(processedNodes[node]!.animationOnlyTransform);
         }
 
         final jointTransform = transform;
-        // jointNode?.animationOnlyTransform ?? Matrix4.identity();
+        // .multiplied(
+        //   jointNode?.animationOnlyTransform ?? Matrix4.identity(),
+        // );
 
         return jointTransform.multiplied(joint.inverseBindMatrix);
+
+        return Matrix4.identity();
       }).toList();
 
       jointTransformsPerSurface[idx] = jointTransforms;
