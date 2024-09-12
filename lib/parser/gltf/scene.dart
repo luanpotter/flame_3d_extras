@@ -25,37 +25,23 @@ class Scene extends GltfNode {
 
   Map<int, ModelNode> toFlameNodes() {
     final nodes = <int, ModelNode>{};
-    _toFlameNodes(
-      nodes: nodes,
-      parentTransform: Matrix4.identity(),
-      parent: null,
-    );
-    return nodes;
-  }
-
-  void _toFlameNodes({
-    required Map<int, ModelNode> nodes,
-    required Matrix4 parentTransform,
-    required ModelNode? parent,
-  }) {
     for (final nodeRef in this.nodes) {
       _processNode(
         nodes: nodes,
-        parentTransform: parentTransform,
-        parent: parent,
+        parent: null,
         nodeRef: nodeRef,
       );
     }
+    return nodes;
   }
 
   void _processNode({
     required Map<int, ModelNode> nodes,
-    required Matrix4 parentTransform,
     required ModelNode? parent,
     required GltfRef<Node> nodeRef,
   }) {
     final gltfNode = nodeRef.get();
-    final combinedTransform = parentTransform.multiplied(gltfNode.transform);
+    final combinedTransform = gltfNode.transform;
 
     final mesh = gltfNode.mesh?.get().toFlameMesh();
 
@@ -84,7 +70,6 @@ class Scene extends GltfNode {
     for (final child in gltfNode.children) {
       _processNode(
         nodes: nodes,
-        parentTransform: combinedTransform,
         parent: node,
         nodeRef: child,
       );

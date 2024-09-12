@@ -82,9 +82,6 @@ class ModelDef {
       await ModelDef.load(
         name: 'duck.glb',
         desc: 'Simple 3D duck.',
-        transform: matrix4(
-          scale: Vector3.all(160.0),
-        ),
         source:
             'https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/Duck',
       ),
