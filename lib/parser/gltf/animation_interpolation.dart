@@ -1,6 +1,4 @@
 import 'package:flame_3d/core.dart';
-import 'package:flame_3d_extras/extensions/quaternion_extensions.dart';
-import 'package:flame_3d_extras/extensions/vector3_extensions.dart';
 import 'package:flame_3d_extras/parser/gltf/gltf_node.dart';
 
 enum AnimationInterpolation {

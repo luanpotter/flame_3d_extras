@@ -3,7 +3,6 @@ import 'dart:ui' show Color;
 
 import 'package:flame_3d/core.dart';
 import 'package:flame_3d/resources.dart' as flame_3d;
-import 'package:flame_3d_extras/extensions/vector4_extensions.dart';
 import 'package:flame_3d_extras/parser/gltf/accessor.dart';
 import 'package:flame_3d_extras/parser/gltf/gltf_node.dart';
 import 'package:flame_3d_extras/parser/gltf/gltf_ref.dart';
@@ -122,7 +121,7 @@ class Primitive extends GltfNode {
     final weights = this.weights?.get().typedData() ?? [];
     // this are the indexes (0, 1, 2, 3) that have any relevance at all
     final relevantIndexes = weights.expand((w) {
-      return w.entries.indexed
+      return w.storage.indexed
           .where((e) => e.$2 > 0.0)
           .map((e) => e.$1)
           .toSet();
@@ -132,7 +131,7 @@ class Primitive extends GltfNode {
     final globalToLocalJointMap = Map.fromEntries(
       joints
           .expand((e) {
-            return e.entries.indexed
+            return e.storage.indexed
                 .where((e) => relevantIndexes.contains(e.$1))
                 .map((e) => e.$2);
           })
@@ -143,7 +142,7 @@ class Primitive extends GltfNode {
 
     final localizedJoints = joints.map((joint) {
       return Vector4.array(
-        joint.entries.map((e) {
+        joint.storage.map((e) {
           if (e == 0.0 && globalToLocalJointMap[e] == null) {
             // this must be a 0 weight value that just happens to be id = 0
             return 0.0;
