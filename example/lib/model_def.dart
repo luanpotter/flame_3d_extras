@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame_3d/game.dart';
 import 'package:flame_3d_extras/extensions/matrix4_utils.dart';
 import 'package:flame_3d_extras/model/model.dart';
@@ -86,16 +88,11 @@ class ModelDef {
         source:
             'https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/Duck',
       ),
-      await ModelDef.load(
-        name: 'metal.glb',
-        desc: 'Simple 3D spheres with varying metal material.',
-        source:
-            'https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/MetalRoughSpheres',
-      ),
       // await ModelDef.load(
-      //   name: 'rogue.glb',
-      //   desc: 'Low-poly 3D rogue character with several animations.',
-      //   source: 'https://kaylousberg.itch.io/kaykit-adventurers',
+      //   name: 'metal.glb',
+      //   desc: 'Simple 3D spheres with varying metal material.',
+      //   source:
+      //       'https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/MetalRoughSpheres',
       // ),
       await ModelDef.load(
         name: 'simple-skin.gltf',
@@ -110,9 +107,20 @@ class ModelDef {
             'https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/RiggedSimple',
       ),
       await ModelDef.load(
+        name: 'rogue.glb',
+        desc: 'Low-poly 3D rogue character with several animations.',
+        source: 'https://kaylousberg.itch.io/kaykit-adventurers',
+        transform: matrix4(
+          rotation: Quaternion.axisAngle(Vector3(0, 1, 0), pi),
+        ),
+      ),
+      await ModelDef.load(
         name: 'char.gltf',
         desc: 'Simple platformer character.',
         source: 'https://quaternius.itch.io/ultimate-platformer-pack',
+        transform: matrix4(
+          rotation: Quaternion.axisAngle(Vector3(0, 1, 0), pi),
+        ),
       ),
     ];
   }
