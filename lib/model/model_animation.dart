@@ -134,29 +134,12 @@ class NodeAnimation {
 }
 
 class ModelAnimation {
-  final String name;
+  final String? name;
   final Map<int, NodeAnimation> nodes;
-  final double _lastTime;
-  double _clock = 0;
+  final double lastTime;
 
   ModelAnimation({
     required this.name,
     required this.nodes,
-  }) : _lastTime = nodes.values.map((e) => e.lastTime).reduce(max);
-
-  void update(double dt) {
-    _clock += dt;
-    while (_clock > _lastTime) {
-      _clock -= _lastTime;
-    }
-  }
-
-  void reset() {
-    _clock = 0;
-  }
-
-  void sampleInto(int nodeIndex, Matrix4 matrix) {
-    final node = nodes[nodeIndex];
-    node?.sampleInto(_clock, matrix);
-  }
+  }) : lastTime = nodes.values.map((e) => e.lastTime).reduce(max);
 }

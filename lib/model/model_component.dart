@@ -2,13 +2,14 @@ import 'package:flame_3d/camera.dart';
 import 'package:flame_3d/components.dart';
 import 'package:flame_3d/core.dart';
 import 'package:flame_3d/graphics.dart';
+import 'package:flame_3d_extras/model/animation_state.dart';
 import 'package:flame_3d_extras/model/model.dart';
-import 'package:flame_3d_extras/model/model_animation.dart';
 
 class ModelComponent extends Object3D {
   final Model model;
+
   final Set<int> _hiddenNodes = {};
-  ModelAnimation? _currentAnimation;
+  final AnimationState _animation = AnimationState();
 
   ModelComponent({
     required this.model,
@@ -22,7 +23,7 @@ class ModelComponent extends Object3D {
 
   @override
   void bind(GraphicsDevice device) {
-    final nodes = model.processNodes(_currentAnimation);
+    final nodes = model.processNodes(_animation);
     for (final MapEntry(key: idx, value: node) in nodes.entries) {
       if (_hiddenNodes.contains(idx)) {
         continue;
@@ -42,24 +43,24 @@ class ModelComponent extends Object3D {
   @override
   void update(double dt) {
     super.update(dt);
-    _currentAnimation?.update(dt);
+    _animation.update(dt);
   }
 
-  void playAnimation(String name) {
-    final animation = model.animations[name];
+  void playAnimationByName(String name) {
+    final animation = model.animations.where((e) => e.name == name).firstOrNull;
     if (animation == null) {
       throw ArgumentError('No animation with name $name');
     }
-    animation.reset();
-    _currentAnimation = animation;
+    _animation.startAnimation(animation);
   }
 
-  void playAnimationIdx(int idx) {
-    playAnimation(model.animations.keys.toList()[idx]);
+  void playAnimationByIdx(int idx) {
+    final animation = model.animations[idx];
+    _animation.startAnimation(animation);
   }
 
   void stopAnimation() {
-    _currentAnimation = null;
+    _animation.startAnimation(null);
   }
 
   void hideNodeByName(String name) {

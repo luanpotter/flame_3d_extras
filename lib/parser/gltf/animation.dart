@@ -47,7 +47,7 @@ class Animation extends GltfNode {
           )!,
         );
 
-  ModelAnimation toFlameAnimation(String name) {
+  ModelAnimation toFlameAnimation() {
     final controllers = <int, List<AnimationController>>{};
     for (final channel in channels) {
       final path = channel.target.path;

@@ -76,9 +76,9 @@ class PlaygroundGame extends FlameGame<PlaygroundWorld3D>
               return KeyEventResult.handled;
             } else {
               final animation =
-                  model.model.animations.keys.elementAtOrNull(idx - 1);
+                  model.model.animations.indexed.elementAtOrNull(idx - 1);
               if (animation != null) {
-                model.playAnimation(animation);
+                model.playAnimationByIdx(animation.$1);
                 return KeyEventResult.handled;
               }
             }
@@ -199,7 +199,7 @@ class PlaygroundWorld3D extends World3D with TapCallbacks {
       this.model = model,
     );
     if (model.model.animations.isNotEmpty) {
-      model.playAnimationIdx(0);
+      model.playAnimationByIdx(0);
     }
   }
 

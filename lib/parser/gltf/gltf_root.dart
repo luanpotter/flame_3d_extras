@@ -147,17 +147,10 @@ class GltfRoot {
   }
 
   Model toFlameModel([int? scene]) {
-    var nextDefaultIdx = 0;
-    String nextDefaultName() => 'unnamed_animation_${nextDefaultIdx++}';
-
     return Model(
       nodes: toFlameNodes(scene),
-      animations: Map.fromEntries(
-        animations.map((animation) {
-          final name = animation.name ?? nextDefaultName();
-          return MapEntry(name, animation.toFlameAnimation(name));
-        }),
-      ),
+      animations:
+          animations.map((animation) => animation.toFlameAnimation()).toList(),
     );
   }
 }

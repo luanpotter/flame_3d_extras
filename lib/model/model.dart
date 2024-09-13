@@ -2,12 +2,13 @@ import 'dart:collection';
 
 import 'package:flame_3d/game.dart';
 import 'package:flame_3d/resources.dart';
+import 'package:flame_3d_extras/model/animation_state.dart';
 import 'package:flame_3d_extras/model/model_animation.dart';
 import 'package:ordered_set/comparing.dart';
 
 class Model {
   final Map<int, ModelNode> nodes;
-  final Map<String, ModelAnimation> animations;
+  final List<ModelAnimation> animations;
 
   Model({
     required this.nodes,
@@ -22,7 +23,7 @@ class Model {
             mesh: mesh,
           ),
         },
-        animations = {};
+        animations = [];
 
   Aabb3 get aabb => _aabb ??= _calculateBoundingBox();
   Aabb3? _aabb;
@@ -38,11 +39,15 @@ class Model {
     return box;
   }
 
-  Set<String> get animationNames => animations.keys.toSet();
+  Set<String> get animationNames {
+    return animations.map((e) => e.name).nonNulls.toSet();
+  }
 
-  Set<String> get nodeNames => nodes.values.map((e) => e.name).nonNulls.toSet();
+  Set<String> get nodeNames {
+    return nodes.values.map((e) => e.name).nonNulls.toSet();
+  }
 
-  Map<int, ProcessedNode> processNodes(ModelAnimation? currentAnimation) {
+  Map<int, ProcessedNode> processNodes(AnimationState animation) {
     final processedNodes = <int, ProcessedNode>{};
 
     final inDegree = <int, int>{};
@@ -64,7 +69,7 @@ class Model {
     while (queue.isNotEmpty) {
       final idx = queue.removeFirst();
       final node = nodes[idx]!;
-      node.processNode(processedNodes, currentAnimation);
+      node.processNode(processedNodes, animation);
       final adjacency = adjacencyMap[idx] ?? {};
       for (final dep in adjacency) {
         inDegree[dep] = inDegree[dep]! - 1;
@@ -114,7 +119,7 @@ class ModelNode {
 
   void processNode(
     Map<int, ProcessedNode> processedNodes,
-    ModelAnimation? animation,
+    AnimationState animation,
   ) {
     final resultMatrix = Matrix4.identity();
 
@@ -125,11 +130,7 @@ class ModelNode {
     }
 
     // local + animation
-    final localTransform = transform.clone();
-    if (animation != null) {
-      animation.sampleInto(nodeIndex, localTransform);
-    }
-
+    final localTransform = animation.maybeTransform(nodeIndex, transform);
     resultMatrix.multiply(localTransform);
 
     final jointTransforms = computeJointsPerSurface(processedNodes);
