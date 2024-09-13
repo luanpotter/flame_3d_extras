@@ -67,6 +67,8 @@ class Node extends GltfNode {
   /// When defined, `mesh` **MUST** also be defined.
   final List<double>? weights;
 
+  final String? name;
+
   Node({
     required super.root,
     required this.camera,
@@ -80,6 +82,7 @@ class Node extends GltfNode {
     required this.scale,
     required this.translation,
     required this.weights,
+    required this.name,
   });
 
   Node.parse(
@@ -98,6 +101,7 @@ class Node extends GltfNode {
           scale: Parser.vector3(root, map, 'scale'),
           translation: Parser.vector3(root, map, 'translation'),
           weights: Parser.floatList(map, 'weights'),
+          name: Parser.string(map, 'name'),
         );
 
   Matrix4? get _trs {

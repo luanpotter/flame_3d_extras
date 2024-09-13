@@ -183,6 +183,18 @@ class PlaygroundWorld3D extends World3D with TapCallbacks {
   Future<void> setModel(ModelDef modelDef) async {
     await clearModel();
     final model = modelDef.toComponent();
+    if (modelDef.name == 'rogue.glb') {
+      final weapons = {
+        '1H_Crossbow',
+        '2H_Crossbow',
+        'Knife',
+        'Throwable',
+        'Knife_Offhand',
+      };
+      for (final weapon in weapons) {
+        model.hideNodeByName(weapon);
+      }
+    }
     await add(
       this.model = model,
     );

@@ -7,6 +7,7 @@ import 'package:flame_3d_extras/model/model_animation.dart';
 
 class ModelComponent extends Object3D {
   final Model model;
+  final Set<int> _hiddenNodes = {};
   ModelAnimation? _currentAnimation;
 
   ModelComponent({
@@ -21,8 +22,12 @@ class ModelComponent extends Object3D {
 
   @override
   void bind(GraphicsDevice device) {
-    final nodes = model.processNodes(_currentAnimation).values;
-    for (final node in nodes) {
+    final nodes = model.processNodes(_currentAnimation);
+    for (final MapEntry(key: idx, value: node) in nodes.entries) {
+      if (_hiddenNodes.contains(idx)) {
+        continue;
+      }
+
       final mesh = node.node.mesh;
       if (mesh != null) {
         device.jointsInfo.jointTransformsPerSurface = node.jointTransforms;
@@ -55,6 +60,11 @@ class ModelComponent extends Object3D {
 
   void stopAnimation() {
     _currentAnimation = null;
+  }
+
+  void hideNodeByName(String name) {
+    final node = model.nodes.entries.firstWhere((e) => e.value.name == name);
+    _hiddenNodes.add(node.key);
   }
 
   @override

@@ -38,6 +38,10 @@ class Model {
     return box;
   }
 
+  Set<String> get animationNames => animations.keys.toSet();
+
+  Set<String> get nodeNames => nodes.values.map((e) => e.name).nonNulls.toSet();
+
   Map<int, ProcessedNode> processNodes(ModelAnimation? currentAnimation) {
     final processedNodes = <int, ProcessedNode>{};
 
@@ -79,6 +83,7 @@ class Model {
 }
 
 class ModelNode {
+  final String? name;
   final int nodeIndex;
   final int? parentNodeIndex;
   final Matrix4 transform;
@@ -86,6 +91,7 @@ class ModelNode {
   final Map<int, ModelJoint> joints;
 
   ModelNode({
+    required this.name,
     required this.nodeIndex,
     required this.parentNodeIndex,
     required this.transform,
@@ -101,7 +107,8 @@ class ModelNode {
   ModelNode.simple({
     required this.nodeIndex,
     required this.mesh,
-  })  : parentNodeIndex = null,
+  })  : name = null,
+        parentNodeIndex = null,
         transform = Matrix4.identity(),
         joints = {};
 
