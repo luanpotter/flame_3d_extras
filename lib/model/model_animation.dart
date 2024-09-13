@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flame_3d/core.dart';
-import 'package:flame_3d_extras/extensions/matrix4_utils.dart';
 import 'package:flame_3d_extras/parser/gltf/animation_interpolation.dart';
 
 abstract class AnimationSpline<T> {
@@ -22,7 +21,7 @@ abstract class AnimationSpline<T> {
         });
 
   T lerp(T a, T b, double t);
-  Matrix4 asTransform(T value);
+  void transform(Matrix4 matrix, T value);
 }
 
 class TranslationAnimationSpline extends AnimationSpline<Vector3> {
@@ -38,8 +37,8 @@ class TranslationAnimationSpline extends AnimationSpline<Vector3> {
   }
 
   @override
-  Matrix4 asTransform(Vector3 value) {
-    return matrix4(translation: value);
+  void transform(Matrix4 matrix, Vector3 value) {
+    matrix.setTranslation(value);
   }
 }
 
@@ -56,8 +55,8 @@ class ScaleAnimationSpline extends AnimationSpline<Vector3> {
   }
 
   @override
-  Matrix4 asTransform(Vector3 value) {
-    return matrix4(scale: value);
+  void transform(Matrix4 matrix, Vector3 value) {
+    matrix.scale(value);
   }
 }
 
@@ -74,8 +73,8 @@ class RotationAnimationSpline extends AnimationSpline<Quaternion> {
   }
 
   @override
-  Matrix4 asTransform(Quaternion value) {
-    return matrix4(rotation: value);
+  void transform(Matrix4 matrix, Quaternion value) {
+    matrix.setRotation(value.asRotationMatrix());
   }
 }
 
@@ -112,6 +111,11 @@ class AnimationController<T> {
 
     throw Exception('This should never happen');
   }
+
+  void sampleInto(double time, Matrix4 matrix) {
+    final value = sample(time);
+    animation.transform(matrix, value);
+  }
 }
 
 class NodeAnimation {
@@ -122,14 +126,10 @@ class NodeAnimation {
     required this.channels,
   }) : lastTime = channels.map((e) => e.lastTime).reduce(max);
 
-  Matrix4 sample(double time) {
-    final result = Matrix4.identity();
+  void sampleInto(double time, Matrix4 matrix) {
     for (final channel in channels) {
-      final value = channel.sample(time);
-      final transform = channel.animation.asTransform(value);
-      result.multiply(transform);
+      channel.sampleInto(time, matrix);
     }
-    return result;
   }
 }
 
@@ -155,8 +155,8 @@ class ModelAnimation {
     _clock = 0;
   }
 
-  Matrix4? sample(int nodeIndex) {
+  void sampleInto(int nodeIndex, Matrix4 matrix) {
     final node = nodes[nodeIndex];
-    return node?.sample(_clock);
+    node?.sampleInto(_clock, matrix);
   }
 }

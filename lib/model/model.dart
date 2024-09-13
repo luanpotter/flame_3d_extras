@@ -117,8 +117,12 @@ class ModelNode {
       resultMatrix.multiply(processedNodes[parentNodeIndex]!.combinedTransform);
     }
 
-    // local or animation
-    final localTransform = animation?.sample(nodeIndex) ?? transform;
+    // local + animation
+    final localTransform = transform.clone();
+    if (animation != null) {
+      animation.sampleInto(nodeIndex, localTransform);
+    }
+
     resultMatrix.multiply(localTransform);
 
     final jointTransforms = computeJointsPerSurface(processedNodes);
