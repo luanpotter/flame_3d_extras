@@ -5,9 +5,14 @@ class AnimationState {
   ModelAnimation? animationRef;
   double clock = 0.0;
 
-  void startAnimation(ModelAnimation? animation) {
+  void startAnimation(
+    ModelAnimation? animation, {
+    bool resetClock = true,
+  }) {
     animationRef = animation;
-    reset();
+    if (resetClock) {
+      reset();
+    }
   }
 
   void update(double dt) {

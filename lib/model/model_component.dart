@@ -46,26 +46,30 @@ class ModelComponent extends Object3D {
     _animation.update(dt);
   }
 
-  void playAnimationByName(String name) {
+  void playAnimationByName(String name, {bool resetClock = true}) {
     final animation = model.animations.where((e) => e.name == name).firstOrNull;
     if (animation == null) {
       throw ArgumentError('No animation with name $name');
     }
-    _animation.startAnimation(animation);
+    _animation.startAnimation(animation, resetClock: resetClock);
   }
 
-  void playAnimationByIdx(int idx) {
+  void playAnimationByIdx(int idx, {bool resetClock = true}) {
     final animation = model.animations[idx];
-    _animation.startAnimation(animation);
+    _animation.startAnimation(animation, resetClock: resetClock);
   }
 
   void stopAnimation() {
     _animation.startAnimation(null);
   }
 
-  void hideNodeByName(String name) {
+  void hideNodeByName(String name, {bool hidden = true}) {
     final node = model.nodes.entries.firstWhere((e) => e.value.name == name);
-    _hiddenNodes.add(node.key);
+    if (hidden) {
+      _hiddenNodes.add(node.key);
+    } else {
+      _hiddenNodes.remove(node.key);
+    }
   }
 
   @override
