@@ -14,6 +14,8 @@ class ModelComponent extends Object3D {
   ModelComponent({
     required this.model,
     super.position,
+    super.rotation,
+    super.scale,
   });
 
   Aabb3 get aabb => _aabb
