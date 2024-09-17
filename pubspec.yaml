@@ -2,7 +2,7 @@ name: flame_3d_extras
 description: >
   An experimental playground with extra features yet to be fully ported into flame_3d.
   Anything in this package is subject to change. Features will probably be slowly incorporated into the main library.
-version: 0.1.0-dev.1
+version: 0.1.0-dev.3
 homepage: https://github.com/luanpotter/flame_3d_extras
 funding:
   - https://opencollective.com/blue-fire
