@@ -111,10 +111,18 @@ class ModelDef {
           rotation: Quaternion.axisAngle(Vector3(0, 1, 0), pi),
         ),
       ),
+      // await ModelDef.load(
+      //   name: 'char.gltf',
+      //   desc: 'Simple platformer character.',
+      //   source: 'https://quaternius.itch.io/ultimate-platformer-pack',
+      //   transform: matrix4(
+      //     rotation: Quaternion.axisAngle(Vector3(0, 1, 0), pi),
+      //   ),
+      // ),
       await ModelDef.load(
-        name: 'char.gltf',
-        desc: 'Simple platformer character.',
-        source: 'https://quaternius.itch.io/ultimate-platformer-pack',
+        name: 'skeleton.glb',
+        desc: 'Low-poly 3D skeleton with several animations.',
+        source: 'https://kaylousberg.itch.io/kaykit-skeletons',
         transform: matrix4(
           rotation: Quaternion.axisAngle(Vector3(0, 1, 0), pi),
         ),
