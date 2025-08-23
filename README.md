@@ -1,3 +1,6 @@
+> [!WARNING]
+> This package has been entirely migrated into the `flame_3d` package in the Flame monorepo and should no longer be needed.
+
 # flame_3d_extras
 
 An experimental playground with extra features yet to be fully ported into flame_3d.
